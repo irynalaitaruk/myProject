@@ -1,0 +1,300 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-image: url("images/hdwp695071617.jpg");
+  background-size: cover;
+}
+header{
+    height: 140px;
+    width: 1300px;
+    border: 1px solid white;
+    background-image: url("images/abstract-light.jpeg");
+}
+.menu{
+    margin-top: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
+    display: flex;
+    justify-content: space-between;
+}
+a{
+    width: auto;
+    height: 35px;
+    position: relative;
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid blue;
+    border-radius: 15px;
+    box-shadow: 2px 2px gray;
+    background: linear-gradient(white,deepskyblue);
+    cursor: pointer;
+}
+a:hover{
+    background-color: aliceblue;
+    border: 4px solid deepskyblue;
+    box-shadow: 2px 2px 2px 2px blue;
+}
+a:active{
+    background-color: aqua;
+}
+.textBlock{
+    width: 600px;
+    height: 200px;
+    border: 1px solid blue;
+    border-radius: 15px;
+    box-shadow: 2px 2px gray;
+    margin: 20px;
+    padding: 20px;
+    background: linear-gradient(deepskyblue,white);
+}
+
+#box {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto 0 auto;
+  box-shadow: 10px 10px 5px gray;
+}
+
+#slider {
+  position: relative; 
+}
+
+.img1,.img2,.img3,.img4,.img5,.img6,.img7 {
+  position: relative;
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 1300px;
+  height: 480px;
+}
+
+a.previous, a.next {
+  position: absolute;
+  top: 40%;
+  z-index: 10;
+  display: block;
+  padding: 4% 3%;
+  width: auto;
+  height: auto;
+  background: cornflowerblue;
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+a.previous:hover, a.next:hover {
+  opacity: 1;
+}
+
+a.previous {
+  border-radius: 0 35px 35px 0;
+}
+
+a.next {
+  right: 0;
+  border-radius: 35px 0 0 35px;
+}
+#btns {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    margin: 3px;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: white;
+    width: 25px;
+    height: 25px;
+}
+#txt1,#txt2,#txt3,#txt4,#txt5,#txt6,#txt7{
+    font-size: 34px;
+    color: white;
+    margin-left: 200px;
+    margin-top: 100px;
+    padding: 40px;
+    display: none;
+    position: absolute;
+    z-index: 10;
+    border: 2px dotted blue;
+    padding: 10px;
+    border-radius: 15px;
+    background: linear-gradient(white,deepskyblue,white);
+}
+.inpt{
+    margin-top: 20px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    height: 20px;
+    box-shadow: 2px 2px gray;
+    padding: 10px;
+}
+.main{
+    display: flex;
+    justify-content: space-around;
+}
+.typeForm,.address{
+    width: 500px;
+    height: 450px;
+    border: 1px solid blue;
+    border-radius: 35px;
+    margin: 20px;
+    background: linear-gradient(deepskyblue,white);
+    padding: 40px;
+}
+.sendForm{
+    width: 300px;
+    height: 20px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    box-shadow: 2px 2px gray;
+    padding: 10px;
+}
+.sendButton{
+    width: 320px;
+    height: 20px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    box-shadow: 2px 2px gray;
+    padding: 20px;
+}
+.sendButton:hover{
+    background-color: blue;
+}
+textarea{
+    width: 320px;
+    height: 120px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    box-shadow: 2px 2px gray;
+    padding: 20px;
+}
+.logPass{
+    width: 1300px;
+    background: linear-gradient(cadetblue,white);
+    text-align: right;
+}
+.logWelcome{
+    width: 200px;
+    height: 60px;
+    padding: 10px;
+    background: linear-gradient(cadetblue,white);
+    position: absolute;
+    right: 0;
+    top: 50px;
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 15px;
+}
+.lgn,.pass{
+    width: 100px;
+}
+.logIn{
+    width: 110px;
+}
+.help{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+     background-image: url("images/chat.png");
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid cornflowerblue;
+    background-size: cover;
+}
+
+/*chat*/
+#main{
+    width: 300px;
+    height: 380px;
+    border: 2px solid blue;
+    border-radius: 15px;
+    box-shadow: 6px 6px 6px 6px gray;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(cadetblue,white,cornflowerblue);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+.hideDiv{
+/*    margin-left: 1250px;*/
+/*    margin-top: -330px;*/
+    position: fixed;
+    right: 0;
+    bottom: 440px;
+    padding: 5px;
+}
+#x{
+    text-align: right;
+    font-size: 24px;
+    color: blue;
+}
+#name{
+    text-align: left;
+    padding-left: 20px;
+    font-weight: bold;
+}
+.addText{
+    overflow: scroll;
+    height: 250px;
+    text-align: left;
+}
+#message{
+    text-align: left;
+    padding-left: 20px;
+}
+#date{
+    font-style: italic;
+}
+.txt1{
+    width: 200px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    height: 20px;
+    box-shadow: 2px 2px gray;
+    padding: 5px;
+}
+.txt2{
+    width: 200px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    height: 20px;
+    box-shadow: 2px 2px gray;
+    padding: 5px;
+}
+.btn1{
+    width: 60px;
+    height: 30px;
+    background-color: cornflowerblue;
+    border-radius: 15px;
+    margin: 3px;
+    font-weight: bold;
+}
+.btn2{
+    width: 60px;
+    height: 30px;
+    background-color: cornflowerblue;
+    border-radius: 15px;
+    margin: 3px;
+    font-weight: bold;
+}
+.btn1:hover,.btn2:hover{
+    background-color: blue;
+}

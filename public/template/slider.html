@@ -1,0 +1,44 @@
+<div>
+<div>
+    <input type="text" ng-show="inputFilter" class="inpt" placeholder="search" ng-model="searchBlock">
+</div>
+ <div ng-repeat="a in arr | filter:searchBlock" class="textBlock" ng-hide="blog">
+                
+                 <h2>{{a.title}}</h2>
+                 <p>{{a.text}}</p>
+ </div>
+
+<div ng-show="slider">
+ <p id="txt1">Italy</p>
+ <p id="txt2">Hungary</p>
+ <p id="txt3">Greece</p>
+ <p id="txt4">Bulgaria</p>
+ <p id="txt5">Egypt</p>
+ <p id="txt6">Croatia</p>
+ <p id="txt7">Montenegro</p>
+ <div id="box">
+  <a href="#" class="next"></a>
+  <a href="#" class="previous"></a>
+  <div id="slider">
+    <img class="img1" src="images/italy.jpg" alt="italy"> 
+    <img class="img2" src="images/hungary.jpg" alt="hungary">
+    <img class="img3" src="images/greece.jpg" alt="greece">
+    <img class="img4" src="images/bulgaria.jpg" alt="bulgaria">
+    <img class="img5" src="images/egypt.jpg" alt="egypt">
+    <img class="img6" src="images/horvatia.jpg" alt="horvatia">
+    <img class="img7" src="images/chornogoria.jpg" alt="chornogoria">
+  </div>  
+  <ul id="btns">
+                <li class="btn"></li>
+                <li class="btn"></li>
+                <li class="btn"></li>
+                <li class="btn"></li>
+                <li class="btn"></li>
+                <li class="btn"></li>
+                <li class="btn"></li>
+
+            </ul>
+    </div>
+
+</div>
+</div>

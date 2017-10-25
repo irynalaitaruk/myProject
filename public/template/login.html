@@ -1,0 +1,14 @@
+<div>
+  <div class="logPass" novalidate ng-show="loginRow">
+       <form name="myForm">
+        LOGIN:<input type="text" class="lgn" ng-model="login" required> 
+        PASSWORD:<input type="password" class="pass" ng-model="password" required> 
+           <button type="submit" ng-disabled="myForm.$invalid" ng-click="checkUsers()" class="logIn">LOG IN</button>
+       </form>
+  </div>
+  <div class="logWelcome" ng-show="loginWelcome" ng-click="welcome()">
+      <h1>WELCOME TO SITE!</h1>
+  </div>
+</div>
+
+

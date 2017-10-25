@@ -1,0 +1,25 @@
+<div>
+<div class="hideDiv" ng-click="hideChat()" ng-show="hideDiv">
+  <p id="x">X</p>
+  </div>
+   <div id="main" ng-show="chatric">
+    <h1>Chatric</h1>
+    
+    <input type="text" placeholder="Enter your name" ng-model="enterName" class="txt1">
+    <input type="button" value="OK" ng-click="sendName()" class="btn1"> 
+    
+<div class="addText">
+    <span ng-show="dt">
+    <span id="date">{{date | date: "dd/MM/yy  hh:mm:ss" }}</span>
+    </span>
+    <span id="name">{{name}}: </span>
+    <span ng-repeat="a in arrText" id="message">{{a}}</span>
+</div>
+    
+<div>
+    <input type="text" placeholder="Enter text here" ng-model="enterText" class="txt2">
+    <input type="button" value="SEND" ng-click="sendText(enterText)" class="btn2">
+</div>
+    </div>
+    
+</div>
