@@ -3,19 +3,109 @@
 /*test test test */
     
 app.controller("myCtrl",function($scope){ });
+                        
+//directive of login
+app.directive('loginBlock', function () {
+    return {
+        replace: true,
+        templateUrl: 'template/login.html',
+        controller: function($scope,$http){ 
+//avtorization
+                $scope.check = function () {
+                let loginObj = {
+                    login: $scope.login,
+                    password: $scope.password
+                };
+                $http.post('http://localhost:8000/login', loginObj)
+                    .then(function successCallback(response) {
+//                     console.log("Welcome " + $scope.login);
+                    if ($scope.login == "admin") {  
+                        $scope.loginRow = false;
+                        $scope.loginWelcome = true;
+                        $scope.wrongLogPass = false;
+                        $scope.reg = false;
+                }
+                    else{
+//                        console.log("Wrong login or password!!!")
+                        $scope.wrongLogPass = true;
+                        $scope.loginRow = false;
+                        $scope.loginWelcome = false;
+                        $scope.reg = false;
+                    }
+                    
+                    }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                    });
+           
+            
+        
+                    $http.post('http://localhost:8000/user-prof', loginObj)
+                    .then(function successCallback(response) {
+                        $scope.userProfile = response.data;
+                         $scope.nameUser = $scope.userProfile[0].name;
+                         $scope.surnameUser = $scope.userProfile[0].sname;
+                         $scope.dateUser = $scope.userProfile[0].date;
+                         $scope.aboutUser = $scope.userProfile[0].about;
+                    
+                    }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                    });
+      };
+                   
+            
+            
+            $scope.error = function(){
+                $scope.wrongLogPass = false;
+            }
+                        
+//registration
+    $scope.registr = function () {
+        let loginObj = {
+            login: $scope.login,
+            password: $scope.password
+                };
+        $http.post('http://localhost:8000/login-reg', loginObj)
+        .then(function successCallback(response) {
+            $scope.user = response.data;
+                    
+                $http.get('http://localhost:8000/users')
+                .then(function successCallback(response) {
+                $scope.arrUsers = response.data;
+                console.log("Registered!!!");
+                    $scope.reg = true;
+                }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                            });
+                    }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                    });
+            };                     
+//exit
+    $scope.exit = function(){
+        $scope.login = "";
+        $scope.password = "";
+        $scope.reg = false
+    }
 
+           
+            
+//                
+        }   
+    }
+});
+
+    
 //directive of slider
 app.directive("slideBlock",function(){
 	return{
 		replace: true,
 		templateUrl:"template/slider.html",
 		controller: function($scope){
-        
         $(document).ready(function () {
   
-	var imgCount = $('img').length;
-	var imgWidth = $('img').width();
-	var imgHeight = $('img').height();
+	var imgCount = $('.imgs').length;
+	var imgWidth = $('.imgs').width();
+	var imgHeight = $('.imgs').height();
 	var sliderWidth = imgCount * imgWidth;
     var btnId = 0;
     var slideNow = 1;
@@ -25,13 +115,13 @@ app.directive("slideBlock",function(){
 	
 	$('#slider').css({ width: sliderWidth, marginLeft: -imgWidth });
 	
-    $('img:last-child').prependTo('#slider');
+    $('.imgs:last-child').prependTo('#slider');
 
     function moveRight() {
         $('#slider').animate({
             left: + imgWidth
         }, 1000, function () {
-            $('img:last-child').prependTo('#slider');
+            $('.imgs:last-child').prependTo('#slider');
             $('#slider').css('left', '');
         });
     };
@@ -40,7 +130,7 @@ app.directive("slideBlock",function(){
         $('#slider').animate({
             left: - imgWidth
         }, 1000, function () {
-            $('img:first-child').appendTo('#slider');
+            $('.imgs:first-child').appendTo('#slider');
             $('#slider').css('left', '');
         });
     };
@@ -172,13 +262,16 @@ app.directive("menuBlock",function(){
                 $scope.inputFilter = false;
                 $scope.adres = true;
                 $scope.loginRow = false;
-                $scope.loginWelcome = false;
+                $scope.loginRow = false;
+                $scope.shopblock = false;
             
         $scope.blogStatus = function(){
             $scope.blog = false;
             $scope.slider = false;
             $scope.inputFilter = true;
             $scope.adres = true;
+            $scope.loginRow = false;
+            $scope.shopblock = false;
            }
         
          $scope.homeStatus = function(){
@@ -187,6 +280,8 @@ app.directive("menuBlock",function(){
             $scope.contact = true;
             $scope.inputFilter = false;
             $scope.adres = true;
+            $scope.loginRow = false;
+            $scope.shopblock = false;
            }
           $scope.contactStatus = function(){
             $scope.blog = true;
@@ -194,10 +289,23 @@ app.directive("menuBlock",function(){
             $scope.contact = true;
             $scope.inputFilter = false;
             $scope.adres = false;
+            $scope.loginRow = false;
+            $scope.shopblock = false;
            }
           $scope.loginStatus = function(){
                $scope.loginRow = true;
           }
+          $scope.shopStatus = function(){
+                $scope.shopblock = true;
+                $scope.blog = true;
+                $scope.contact = true;
+                $scope.slider = false;
+                $scope.inputFilter = false;
+                $scope.adres = true;
+                $scope.loginRow = false;
+                $scope.loginRow = false;
+          }
+          
           $scope.welcome = function(){
               $scope.loginWelcome = false;
           }
@@ -214,32 +322,44 @@ app.directive("contactBlock",function(){
     }
 })
 
-//directive of login
-app.directive('loginBlock', function () {
-    return {
-        replace: true,
-        templateUrl: 'template/login.html',
-        controller: function($scope,$http){
-					$scope.checkUsers = function(){
-						let obj = {
-							login:$scope.login,
-							pass:$scope.password
-						}
-						
-					$http.post('http://localhost:8000/login',obj)
-					.then(function successCallback(response){
-						console.log(response.data);
-                        $scope.loginRow = false;
-                        $scope.loginWelcome = true;
-					}, function errorCallback(response){
-						console.log("Error!!!" + response.err);
-					});
-						
-					}
-                    
-				}
+
+//directive of shop
+app.directive("shopBlock",function(){
+    return{
+    replace: true,
+    templateUrl: "template/shop.html",
+    controller: function($scope,$http){
+            $scope.items = [];
+    
+//get list of items
+$http.get('http://localhost:8000/items') 
+.then(function successCallback(response){
+    $scope.items = response.data;
+    },function errorCallback(response) {
+        console.log("Error!!!" + response.err);
+            }); 
+
+
+        //get brand
+        $scope.checkBrand = function () {
+                let brandObj = {
+                    name: $scope.name
+                };
+               
+                     $http.post('http://localhost:8000/brand-inf', brandObj)
+                    .then(function successCallback(response) {
+                         $scope.brandProfile = response.data;
+                         $scope.brandName = $scope.brandProfile[0].name;
+                         $scope.brandInform = true;                    
+                    }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                    });
+            }
+        //
+        
+      }
     }
-});
+})
 
 //directive of helpButton
 app.directive("helpBlock",function(){
@@ -247,6 +367,7 @@ app.directive("helpBlock",function(){
     replace: true,
     templateUrl: "template/help.html",
     controller: function($scope){
+//        $scope.loginRow = false;
         $scope.chatric = false;
         $scope.hideDiv = false;
         $scope.helpBtn = true;
@@ -273,6 +394,7 @@ app.directive('chatBlock', function () {
         replace: true,
         templateUrl:'template/chat.html' ,
         controller: function ($scope) {
+//        $scope.loginRow = false;
         $scope.dt = false;
             
             $scope.arrText = [];

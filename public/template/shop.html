@@ -1,0 +1,59 @@
+<div>
+   
+<div ng-show="shopblock">
+                       <div class="goods">Goods for the beach</div> <br>
+     <div class="block">
+        <div class="goodsFiltr">
+           <p id="filtr">Filtr for goods</p> 
+           <br>
+           Price
+           <br>
+           <input type="text" class="inptShop"> <input type="text" class="inptShop">
+           <br><br>
+           Brand
+           <br> <br>    
+            <select class="inptShop" ng-model="name">
+                <option value="chanel">chanel</option>
+                <option value="dior">dior</option>
+                <option value="michael kors">michael kors</option>
+                <option value="no brand">no brand</option>
+                <option value="prada">prada</option>
+            </select> <br>
+            <input type="button" value="choose" class="choose" ng-click="checkBrand()">
+           <br>
+           <br>
+           <br>
+            <p id="catalog"><b>Catalog:</b></p> <br><br>
+           <a href="#" class="items">Bags</a> <br> <br>
+           <a href="#" class="items">Hats</a> <br> <br>
+           <a href="#" class="items">Sunglasses</a> <br> <br>
+           <a href="#" class="items">Slippers</a>
+         </div>
+     
+     
+        <div class="mainBlock">
+
+            <div ng-repeat="a in items track by $index" class="bagBlock">   
+            <img src="images/bag1.png" style="width: 200px; height: 200px">
+                   <br><br>
+                  
+                          <div ng-show="brandInform">
+                             {{brandName}} 
+                          </div>
+
+                  
+                   <div class="namePrice">
+                        <div class="name">{{a.name}}<div>
+                        <div class="price">{{a.price}} $</div>
+                    </div>
+                    <a class="buy">Buy</a>
+        <br>
+                     </div>
+                    </div>
+         </div>
+         
+     </div>
+     
+</div>
+                   
+</div>
