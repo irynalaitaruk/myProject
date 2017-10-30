@@ -1,36 +1,35 @@
 <div>
-  <div class="logPass" novalidate ng-show="loginRow">
-       <form name="myForm">
-       <img src="images/login.png" style="width: 40px; height: 40px">
-        Login:<input type="text" class="lgn" ng-model="login" required> <br>
-        <img src="images/pass.png" style="width: 40px; height: 30px">
-        Password:<input type="password" class="pass" ng-model="password" required> <br>
-           <p> <a href="#" class="forget">Forget password? </a></p>
-           <button type="submit" ng-disabled="myForm.$invalid" ng-click="check()" class="logIn" ng-disabled="myForm">LOG IN</button>
-           
-            <button type="submit" ng-click="exit()" class="btnExit">EXIT</button>
 
-       </form>
-        
-      <p class="reg" ng-show="reg">Registered!!!</p>
-      <p> <a href="#" class="registr" ng-click="registr()"> Registration</a></p>
-  </div>
-  <div class="logWelcome" ng-show="loginWelcome" ng-click="welcome()">
-     <img src="images/user.png" style="width: 60px; height: 60px">
-      <h3>WELCOME {{login}} !!!</h3>
-
-      <div class="profilePage" ng-show ="ProfileStatus">
-    <h1>Profile Page</h1>
-    Your name: {{nameUser}} <br>
-    Your surname: {{surnameUser}} <br>
-    Your date birthday : {{dateUser}} <br>
-    About yourself : {{aboutUser}} <br>
+<div ng-show="loginRow" ng-cloak class="logPass">
+    <div ng-show="newUser">
+        <form role="form" name="myForm" novalidate>
+            <div>
+                <img src="images/login.png" alt="login" style="width: 50px; height: 50px">
+                <input type="text" ng-model="login" placeholder="User name" class="inptLog" required autofocus/>
+                <br>
+                 <img src="images/pass.png" alt="pass" style="width: 50px; height: 40px">
+                <input type="password" ng-model="password" placeholder="Password" class="inptPass" required/>
+            </div>
+                <br>
+                    
+            <a href="#" class="forgetPass" ng-click="changePassword()">Forget password? </a>
+                <br> <br>
+            <a href="#" class="reg" ng-click="registr()">Registration</a>
+        </form>
+    </div>
+            
+    <div ng-show="enterLogin" class="userIn">
+        {{userIn}}
+    </div>
+    
+    <button type="button" class="logIn" ng-click="check()" ng-disabled="myForm.$invalid">LogIn</button>
+                           
+    <button type="button" ng-click="logOut()" class="btnExit">Exit</button>
+        <br> <br>
+    <div class="error">{{user}}</div>
+                    
+     <profile-block></profile-block>
+     
 </div>
-      
-  </div>
-  <div class="wrong" ng-show="wrongLogPass" ng-click="error()">
-      <h3>Wrong login or password!!!</h3>
-  </div>
-</div>
-
+     
 
