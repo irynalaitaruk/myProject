@@ -1,14 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-//const cors = require('cors');
 const mysql = require('mysql');
 const port = 8000;
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
-//app.use(cors());
+
 
 //MYSQL
 const connection = mysql.createConnection({
@@ -106,7 +105,7 @@ let initDb4 = function () {
 initDb4();
 
 
-//Авторизація 
+//Avtorization
 app.post('/login-auth', function (req, res) {
     connection.query('SELECT * FROM users  WHERE login = ?', req.body.login, function (err, rows) {
         if (err) throw err;
@@ -122,7 +121,7 @@ app.post('/login-auth', function (req, res) {
     });
 });
 
-//Реєстрація
+//Registration
 app.post('/login-reg', function (req, res) {
     connection.query('SELECT * FROM users  WHERE login = ?', req.body.login, function (err, rows) {
         if (err) throw err;
@@ -142,7 +141,7 @@ app.post('/login-reg', function (req, res) {
     });
 });
 
-//Завантажити дані авторизованого юзера
+//Load inform avtoriz user
 app.post('/user-prof', function (req, res) {
     connection.query('SELECT * FROM users  WHERE login = ?', req.body.login, function (err, rows) {
         if (err) throw err;
@@ -175,7 +174,7 @@ connection.query('SELECT * FROM items',
 res.status(200).send(rows);
     });
 });
-//
+
 //get hats
 app.get('/hats', function (req, res) {
 connection.query('SELECT * FROM hats', 
@@ -186,10 +185,9 @@ connection.query('SELECT * FROM hats',
 res.status(200).send(rows);
     });
 });
-//
 
 
-
+//get bag brand
 app.post('/brand-inf', function (req, res) {
     connection.query('SELECT * FROM brand  WHERE name = ?', req.body.name, function (err, rows) {
         if (err) throw err;
@@ -205,7 +203,8 @@ app.post('/brand-inf', function (req, res) {
         }
     });
 });
-//
+
+//get hat brand
 app.post('/brandhat-inf', function (req, res) {
     connection.query('SELECT * FROM brand  WHERE name = ?', req.body.name, function (err, rows) {
         if (err) throw err;
@@ -221,6 +220,7 @@ app.post('/brandhat-inf', function (req, res) {
         }
     });
 });
+
 //ngDialogBuyItems
 app.post('/item-change', function (req, res) {
     connection.query('UPDATE items SET name = ?, price = ?', [req.body.name, req.body.price],
