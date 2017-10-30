@@ -1,7 +1,5 @@
-﻿var app = angular.module("app",["ngRoute"]);
+﻿var app = angular.module("app",["ngRoute","ngDialog"]);
 
-/*test test test */
-    
 app.controller("myCtrl",function($scope){ });
                         
 //directive of login
@@ -9,91 +7,168 @@ app.directive('loginBlock', function () {
     return {
         replace: true,
         templateUrl: 'template/login.html',
-        controller: function($scope,$http){ 
-//avtorization
-                $scope.check = function () {
+        controller: function($scope,$http,ngDialog){ 
+            $scope.changePasswordStatus = false;
+//Logout
+            $scope.logOut = function () {
+                $scope.newUser = true;
+                $scope.enterLogin = false;
+                localStorage.userName = "default";
+                $scope.profileStatus = false;
+            };
+//Loading avtoriz user
+            if (localStorage.userName == undefined) {
+                localStorage.userName = "default";
+            } else {
+                if (localStorage.userName != "default") {
+                    $scope.userIn = "Wellcome " + localStorage.userName + "!!!";
+                    $scope.newUser = false;
+                   
+                    $scope.enterLogin = true;
+                    $scope.user = "";
+                    let loginObj = {
+                        login: localStorage.userName
+                    };
+                    $http.post('http://localhost:8000/user-prof', loginObj)
+                        .then(function successCallback(response) {
+                    
+                           if(response.data != "User profile is undefined"){
+                                    $scope.userProfile = response.data;
+                                    $scope.nameUserProfile = $scope.userProfile[0].name;
+                                    $scope.snameUserProfile = $scope.userProfile[0].sname;
+                                    $scope.dateUserProfile = $scope.userProfile[0].date;
+                                    $scope.aboutUserProfile = $scope.userProfile[0].about;
+                                    $scope.profileStatus = true;
+                                }
+                                else{
+                                    console.log(response.data)
+                                }
+
+                        }, function errorCallback(response) {
+                            console.log("Error!!!" + response.err);
+                        });
+
+
+                } else {
+                    $scope.newUser = true;
+                    $scope.enterLogin = false;
+                }
+            };
+//Avtorization
+            $scope.check = function () {
                 let loginObj = {
                     login: $scope.login,
                     password: $scope.password
                 };
-                $http.post('http://localhost:8000/login', loginObj)
+                $http.post('http://localhost:8000/login-auth', loginObj)
                     .then(function successCallback(response) {
-//                     console.log("Welcome " + $scope.login);
-                    if ($scope.login == "admin") {  
-                        $scope.loginRow = false;
-                        $scope.loginWelcome = true;
-                        $scope.wrongLogPass = false;
-                        $scope.reg = false;
-                }
-                    else{
-//                        console.log("Wrong login or password!!!")
-                        $scope.wrongLogPass = true;
-                        $scope.loginRow = false;
-                        $scope.loginWelcome = false;
-                        $scope.reg = false;
-                    }
-                    
+                        if (response.data == "welcome") {
+                            $scope.userIn = "Wellcome " + $scope.login + "!!!";
+                            $scope.newUser = false;
+                            $scope.enterLogin = true;
+                            $scope.user = "";
+                            localStorage.userName = $scope.login;
+
+                            let loginObj = {
+                                login: localStorage.userName
+                            };
+                            $http.post('http://localhost:8000/user-prof', loginObj)
+                                .then(function successCallback(response) {
+                                
+                                if(response.data != "User profile is undefined"){
+                                    $scope.userProfile = response.data;
+                                    $scope.nameUserProfile = $scope.userProfile[0].name;
+                                    $scope.snameUserProfile = $scope.userProfile[0].sname;
+                                    $scope.dateUserProfile = $scope.userProfile[0].date;
+                                    $scope.aboutUserProfile = $scope.userProfile[0].about;
+                                    $scope.profileStatus = true;
+                                }
+                                else{
+                                    console.log(response.data)
+                                }
+
+                                }, function errorCallback(response) {
+                                    console.log("Error!!!" + response.err);
+                                });
+                        } else {
+                            $scope.user = response.data;
+                        };
                     }, function errorCallback(response) {
                         console.log("Error!!!" + response.err);
                     });
-           
-            
-        
-                    $http.post('http://localhost:8000/user-prof', loginObj)
-                    .then(function successCallback(response) {
-                        $scope.userProfile = response.data;
-                         $scope.nameUser = $scope.userProfile[0].name;
-                         $scope.surnameUser = $scope.userProfile[0].sname;
-                         $scope.dateUser = $scope.userProfile[0].date;
-                         $scope.aboutUser = $scope.userProfile[0].about;
-                    
-                    }, function errorCallback(response) {
-                        console.log("Error!!!" + response.err);
-                    });
-      };
-                   
-            
-            
-            $scope.error = function(){
-                $scope.wrongLogPass = false;
-            }
-                        
-//registration
-    $scope.registr = function () {
-        let loginObj = {
-            login: $scope.login,
-            password: $scope.password
+            };
+//Registration
+            $scope.registr = function () {
+                let loginObj = {
+                    login: $scope.login,
+                    password: $scope.password
                 };
-        $http.post('http://localhost:8000/login-reg', loginObj)
-        .then(function successCallback(response) {
-            $scope.user = response.data;
-                    
-                $http.get('http://localhost:8000/users')
-                .then(function successCallback(response) {
-                $scope.arrUsers = response.data;
-                console.log("Registered!!!");
-                    $scope.reg = true;
-                }, function errorCallback(response) {
-                        console.log("Error!!!" + response.err);
+                $http.post('http://localhost:8000/login-reg', loginObj)
+                    .then(function successCallback(response) {
+                        $scope.user = response.data;
+                        $http.get('http://localhost:8000/users')
+                            .then(function successCallback(response) {
+                                $scope.arrUsers = response.data;
+                            }, function errorCallback(response) {
+                                console.log("Error!!!" + response.err);
                             });
                     }, function errorCallback(response) {
                         console.log("Error!!!" + response.err);
                     });
-            };                     
-//exit
-    $scope.exit = function(){
-        $scope.login = "";
-        $scope.password = "";
-        $scope.reg = false
-    }
-
-           
+            };
             
+//Change password
+    $scope.changePassword = function (index,login,password) {
+        ngDialog.open({
+            template: '/template/changePass.html',
+            scope: $scope,
+            controller: function($scope){
+                     $scope.indexChangeItem = index;
+                      $scope.editLog = login; 
+                      $scope.editPass = password 
+                
+                
+     $scope.editpass = function () {
+        let itemObj = {
+            login: $scope.editLog,
+            password: $scope.editPass,
+            id: $scope.indexChangeItem
+        };
+        $http.post('http://localhost:8000/pass-change', itemObj)
+            .then(function successCallback(response) {
+            ngDialog.closeAll();
+            }, function errorCallback(response) {
+                console.log("Error!!!" + response.err);
+            });
+         };
+      }
+  })
+        .closePromise.then(function(res){
+            $http.get('http://localhost:8000/users')
+            .then(function successCallback(response) {
+                $scope.users = response.data;
+           }, function errorCallback(response) {
+             console.log("Error!!!" + response.err);
+            }); 
+        });
+
+    }
+            
+                        
 //                
         }   
     }
 });
 
+
+//directive of profile
+app.directive('profileBlock', function () {
+    return {
+        replace: true,
+        templateUrl: 'template/profile.html',
+        controller: function ($scope) {}
+    }
+});
     
 //directive of slider
 app.directive("slideBlock",function(){
@@ -293,7 +368,13 @@ app.directive("menuBlock",function(){
             $scope.shopblock = false;
            }
           $scope.loginStatus = function(){
-               $scope.loginRow = true;
+            $scope.loginRow = true;
+            $scope.blog = true;
+            $scope.slider = false; 
+            $scope.contact = true;
+            $scope.inputFilter = false;
+            $scope.adres = true;
+            $scope.shopblock = false;
           }
           $scope.shopStatus = function(){
                 $scope.shopblock = true;
@@ -305,10 +386,7 @@ app.directive("menuBlock",function(){
                 $scope.loginRow = false;
                 $scope.loginRow = false;
           }
-          
-          $scope.welcome = function(){
-              $scope.loginWelcome = false;
-          }
+        
         }
     }
 })
@@ -317,8 +395,8 @@ app.directive("menuBlock",function(){
 app.directive("contactBlock",function(){
     return{
     replace: true,
-    templateUrl: "template/contacts.html"
-//    controller: function($scope){}
+    templateUrl: "template/contacts.html",
+    controller: function($scope){}
     }
 })
 
@@ -328,8 +406,11 @@ app.directive("shopBlock",function(){
     return{
     replace: true,
     templateUrl: "template/shop.html",
-    controller: function($scope,$http){
+    controller: function($scope,$http,ngDialog){
             $scope.items = [];
+            $scope.hats = [];
+            $scope.mainItems = true;
+            $scope.hatItems = true;
     
 //get list of items
 $http.get('http://localhost:8000/items') 
@@ -339,8 +420,16 @@ $http.get('http://localhost:8000/items')
         console.log("Error!!!" + response.err);
             }); 
 
-
-        //get brand
+//get list of hats
+$http.get('http://localhost:8000/hats') 
+.then(function successCallback(response){
+    $scope.hats = response.data;
+    },function errorCallback(response) {
+        console.log("Error!!!" + response.err);
+            });
+//
+ $scope.brandInform = false;
+        //get bag brand
         $scope.checkBrand = function () {
                 let brandObj = {
                     name: $scope.name
@@ -350,11 +439,79 @@ $http.get('http://localhost:8000/items')
                     .then(function successCallback(response) {
                          $scope.brandProfile = response.data;
                          $scope.brandName = $scope.brandProfile[0].name;
-                         $scope.brandInform = true;                    
+                         $scope.brandPrice = $scope.brandProfile[0].price;
+                         $scope.brandImage = $scope.brandProfile[0].image;
+                         $scope.brandInform = true;
+                         $scope.brandHatInform = false;
+                         $scope.mainItems = false;
+                         $scope.hatItems = false;
                     }, function errorCallback(response) {
                         console.log("Error!!!" + response.err);
                     });
             }
+        //get hat brand
+                $scope.checkhatBrand = function () {
+                let brandhatObj = {
+                    name: $scope.name
+                };
+               
+                     $http.post('http://localhost:8000/brandhat-inf', brandhatObj)
+                    .then(function successCallback(response) {
+                         $scope.brandHatProfile = response.data;
+                         $scope.brandHatName = $scope.brandHatProfile[0].name;
+                         $scope.brandHatPrice = $scope.brandHatProfile[0].price;
+                         $scope.brandHatImage = $scope.brandHatProfile[0].image;
+                         $scope.brandHatInform = true;
+                         $scope.brandInform = false;
+                         $scope.hatItems = false;
+                          $scope.mainItems = false;
+                    }, function errorCallback(response) {
+                        console.log("Error!!!" + response.err);
+                    });
+            }
+        
+//ngDialog
+    $scope.buy = function (name, price) {
+        ngDialog.open({
+            template: '/template/newItem.html',
+            scope: $scope,
+            controller: function($scope){
+                
+            ngDialog.closeAll();
+      }
+  })
+        .closePromise.then(function(res){
+            $http.get('http://localhost:8000/items')
+            .then(function successCallback(response) {
+                $scope.items = response.data;
+           }, function errorCallback(response) {
+             console.log("Error!!!" + response.err);
+            }); 
+        });
+
+    }
+        
+   //
+    $scope.brand = false;
+    $scope.mainItems = true;
+    $scope.hatItems = true;
+$scope.brands = function(){
+    $scope.brand = true;
+}
+$scope.bags = function(){
+    $scope.mainItems = true;
+    $scope.hatItems = false;
+    $scope.brandInform = false;
+    $scope.brandHatInform = false;
+}
+$scope.hat = function(){
+    $scope.mainItems = false;
+    $scope.hatItems = true;
+    $scope.brandInform = false;
+    $scope.brandHatInform = false;
+}
+
+        
         //
         
       }
@@ -367,7 +524,6 @@ app.directive("helpBlock",function(){
     replace: true,
     templateUrl: "template/help.html",
     controller: function($scope){
-//        $scope.loginRow = false;
         $scope.chatric = false;
         $scope.hideDiv = false;
         $scope.helpBtn = true;
@@ -394,13 +550,9 @@ app.directive('chatBlock', function () {
         replace: true,
         templateUrl:'template/chat.html' ,
         controller: function ($scope) {
-//        $scope.loginRow = false;
         $scope.dt = false;
             
             $scope.arrText = [];
-//            $scope.arrName = [{
-//                name: "Anonim"
-//            }];
             $scope.name = model;
             $scope.date = modelDate;
             
@@ -411,8 +563,6 @@ app.directive('chatBlock', function () {
             
           $scope.sendText = function(a){
             $scope.arrText.push(a); 
-//            $scope.arrName.push(b); 
-              
             $scope.enterText = "";
             $scope.dt = true;
             }
